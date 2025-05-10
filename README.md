@@ -74,8 +74,15 @@ These operations are implemented but require specific user roles:
 
 ## Prerequisites
 
+### NodeJS Installation
 - Node.js 18 or higher
 - npm or yarn
+- Manifold Markets API key
+- Minimum M$1000 balance for market creation
+
+### Docker Installation
+- Docker Engine v1.12.0 or greater (included with
+[Docker Desktop](https://www.docker.com/products/docker-desktop/) installation
 - Manifold Markets API key
 - Minimum M$1000 balance for market creation
 
@@ -83,8 +90,17 @@ These operations are implemented but require specific user roles:
 
 ### 1. Install the package
 
+**NodeJS Installation:**
+
 ```bash
 npm install manifold-mcp-server
+```
+
+**Docker Installation:**
+
+```bash
+docker pull ghcr.io/tiovikram/manifold-mcp-server
+docker tag ghcr.io/tiovikram/manifold-mcp-server manifold-mcp-server
 ```
 
 ### 2. Get your API Key
@@ -95,6 +111,8 @@ npm install manifold-mcp-server
 4. Ensure account has sufficient mana for intended operations
 
 ### 3. Configure MCP Settings
+
+**NodeJS Installation:**
 
 #### For Claude Desktop
 
@@ -124,6 +142,58 @@ Add to `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude
     "manifold": {
       "command": "node",
       "args": ["/path/to/manifold-mcp-server/build/index.js"],
+      "env": {
+        "MANIFOLD_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+**Docker Installation:**
+
+#### For Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "manifold": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "MANIFOLD_API_KEY",
+        "manifold-mcp-server"
+      ],
+      "env": {
+        "MANIFOLD_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
+```
+
+#### For Cline (VSCode Extension)
+
+Add to `~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "manifold": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-e",
+        "MANIFOLD_API_KEY",
+        "manifold-mcp-server"
+      ],
       "env": {
         "MANIFOLD_API_KEY": "your_api_key_here"
       }
